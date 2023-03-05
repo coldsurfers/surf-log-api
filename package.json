@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "prisma:generate": "yarn prisma generate --schema ./src/database/schema.prisma",
+    "prisma:format": "yarn prisma format --schema ./src/database/schema.prisma",
+    "debug": "vercel dev --listen 3001",
+    "deploy": "vercel",
+    "build": "tsc",
+    "vercel:sync-env:dev": "vercel env pull --environment=development",
+    "vercel:sync-env:prod": "vercel env pull --environment=production",
+    "lint": "yarn eslint 'src/**/*.ts' 'vercel/**/*.ts' --cache"
+  },
   "devDependencies": {
     "@types/node": "^18.14.6",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
