@@ -16,6 +16,8 @@ model BlogArticle {
   excerpt               String
   blogArticleCategoryId Int
   blogArticleCategory   BlogArticleCategory @relation(fields: [blogArticleCategoryId], references: [id])
+  blogArticleTagId      Int
+  blogArticleTag        BlogArticleTag      @relation(fields: [blogArticleTagId], references: [id])
   createdAt             DateTime            @default(now())
 
   @@index([blogArticleCategoryId])
@@ -29,7 +31,8 @@ model BlogArticleCategory {
 }
 
 model BlogArticleTag {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
+  id           Int           @id @default(autoincrement())
+  name         String
+  blogArticles BlogArticle[]
+  createdAt    DateTime      @default(now())
 }

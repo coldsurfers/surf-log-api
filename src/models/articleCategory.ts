@@ -1,0 +1,11 @@
+import Article from './article'
+
+export default class ArticleCategory {
+  public id!: number
+
+  public name!: string
+
+  public blogArticles!: Article[]
+
+  public createdAt!: Date
+}
