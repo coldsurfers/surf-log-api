@@ -13,11 +13,10 @@ model BlogArticle {
   title                 String
   content               String
   thumbnail             String
-  excerpt               String
+  excerpt               String              @unique
   blogArticleCategoryId Int
   blogArticleCategory   BlogArticleCategory @relation(fields: [blogArticleCategoryId], references: [id])
-  blogArticleTagId      Int
-  blogArticleTag        BlogArticleTag      @relation(fields: [blogArticleTagId], references: [id])
+  blogArticleTags       TagsOnArticles[]
   createdAt             DateTime            @default(now())
 
   @@index([blogArticleCategoryId])
@@ -25,14 +24,24 @@ model BlogArticle {
 
 model BlogArticleCategory {
   id           Int           @id @default(autoincrement())
-  name         String
+  name         String        @unique
   blogArticles BlogArticle[]
   createdAt    DateTime      @default(now())
 }
 
 model BlogArticleTag {
-  id           Int           @id @default(autoincrement())
+  id           Int              @id @default(autoincrement())
   name         String
-  blogArticles BlogArticle[]
-  createdAt    DateTime      @default(now())
+  blogArticles TagsOnArticles[]
+  createdAt    DateTime         @default(now())
+}
+
+model TagsOnArticles {
+  blogArticle      BlogArticle    @relation(fields: [blogArticleId], references: [id])
+  blogArticleId    Int
+  blogArticleTag   BlogArticleTag @relation(fields: [blogArticleTagId], references: [id])
+  blogArticleTagId Int
+  createdAt        DateTime       @default(now())
+
+  @@id([blogArticleId, blogArticleTagId])
 }
