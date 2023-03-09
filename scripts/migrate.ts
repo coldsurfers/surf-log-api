@@ -75,7 +75,14 @@ async function createArticle() {
   )
 }
 
+async function reset() {
+  await prisma.tagsOnArticles.deleteMany()
+  await prisma.blogArticleTag.deleteMany()
+  await prisma.blogArticle.deleteMany()
+}
+
 async function migrate() {
+  await reset()
   await createCategory()
   await createArticle()
 }
