@@ -1,6 +1,6 @@
-import ArticleCategory from './articleCategory'
+import BlogArticleCategory from './BlogArticleCategory'
 
-export default class Article {
+export default class BlogArticle {
   public id!: number
 
   public title!: string
@@ -14,7 +14,7 @@ export default class Article {
   public blogArticleCategoryId!: number
 
   public blogArticleCategory!: Pick<
-    ArticleCategory,
+    BlogArticleCategory,
     'id' | 'createdAt' | 'name'
   >
 
