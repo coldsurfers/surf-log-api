@@ -1,12 +1,14 @@
 import { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node'
 import Fastify from 'fastify'
 import { articleRouter } from '../../src/routes/article'
+import { categoryRouter } from '../../src/routes/category'
 
 const fastify = Fastify({
   logger: process.env.NODE_ENV === 'development',
 })
 
 fastify.register(articleRouter, { prefix: '/article' })
+fastify.register(categoryRouter, { prefix: '/category' })
 
 const handler: VercelApiHandler = async (
   req: VercelRequest,
