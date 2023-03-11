@@ -17,6 +17,7 @@ model BlogArticle {
   blogArticleCategoryId Int
   blogArticleCategory   BlogArticleCategory @relation(fields: [blogArticleCategoryId], references: [id])
   blogArticleTags       TagsOnArticles[]
+  isPublic              Boolean             @default(false)
   createdAt             DateTime            @default(now())
 
   @@index([blogArticleCategoryId])

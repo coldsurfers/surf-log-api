@@ -39,6 +39,7 @@ async function createArticle() {
             : undefined,
           thumbnail: article.data.thumbnail ?? '',
           title: article.data.title ?? '',
+          isPublic: true,
           blogArticleCategory: {
             connectOrCreate: {
               create: {

@@ -19,13 +19,16 @@ export default class BlogArticle {
     'id' | 'createdAt' | 'name'
   >
 
+  public isPublic!: boolean
+
   public createdAt!: Date
 
   public static async findByExcerpt(excerpt: string) {
     try {
-      return await prisma.blogArticle.findUnique({
+      return await prisma.blogArticle.findFirst({
         where: {
           excerpt,
+          isPublic: true,
         },
         include: {
           blogArticleCategory: {
@@ -64,6 +67,7 @@ export default class BlogArticle {
     try {
       return await prisma.blogArticle.findMany({
         where: {
+          isPublic: true,
           blogArticleCategory: category
             ? {
                 name: category,
