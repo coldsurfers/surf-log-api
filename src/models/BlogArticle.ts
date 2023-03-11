@@ -27,6 +27,22 @@ export default class BlogArticle {
         where: {
           excerpt,
         },
+        include: {
+          blogArticleCategory: {
+            select: {
+              name: true,
+            },
+          },
+          blogArticleTags: {
+            select: {
+              blogArticleTag: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
       })
     } catch (e) {
       console.error(e)
