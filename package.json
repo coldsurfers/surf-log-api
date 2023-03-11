@@ -17,7 +17,8 @@
     "prisma:format": "yarn prisma format --schema ./prisma/schema.prisma",
     "prisma:db-push": "npx prisma db push --schema=./prisma/schema.prisma",
     "prisma:generate": "yarn prisma:format && npx prisma generate --schema=./prisma/schema.prisma",
-    "lint": "yarn eslint 'src/**/*.ts' 'vercel/**/*.ts' --cache"
+    "lint": "yarn eslint 'src/**/*.ts' 'vercel/**/*.ts' --cache",
+    "postinstall": "yarn prisma:generate"
   },
   "devDependencies": {
     "@types/node": "^18.14.6",
