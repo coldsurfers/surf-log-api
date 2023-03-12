@@ -85,16 +85,18 @@ export default class BlogArticle {
     category,
     tag,
     count = 15,
+    isPublic = true,
   }: {
     page: number
     category?: string
     tag?: string
     count?: number
+    isPublic?: boolean
   }) {
     try {
       return await prisma.blogArticle.findMany({
         where: {
-          isPublic: true,
+          isPublic,
           blogArticleCategory: category
             ? {
                 name: category,

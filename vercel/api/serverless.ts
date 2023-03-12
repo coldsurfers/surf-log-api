@@ -5,6 +5,7 @@ import { categoryRouter } from '../../src/routes/category'
 
 const fastify = Fastify({
   logger: process.env.NODE_ENV === 'development',
+  trustProxy: true,
 })
 
 fastify.register(articleRouter, { prefix: '/article' })

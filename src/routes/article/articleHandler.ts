@@ -1,6 +1,8 @@
 import { RouteHandler } from 'fastify'
 import BlogArticle from '../../models/BlogArticle'
 
+const { ALLOWED_ADMIN_IP } = process.env
+
 export const blogArticleByExcerptHandler: RouteHandler<{
   Params: {
     excerpt: string
@@ -22,15 +24,26 @@ export const blogArticleListRouteHandler: RouteHandler<{
     category?: string
     tag?: string
     count?: number
+    isPublic?: string
   }
 }> = async (req, rep) => {
-  const { page, category, tag, count } = req.query
+  const { ip } = req
+  const { page, category, tag, count, isPublic } = req.query
+  if (typeof isPublic === 'string') {
+    if (ALLOWED_ADMIN_IP !== ip) {
+      return rep.status(404).send()
+    }
+    if (isPublic !== 'true' && isPublic !== 'false') {
+      return rep.status(400).send()
+    }
+  }
   try {
     const list = await BlogArticle.list({
       page: page ? +page : 1,
       category,
       tag,
       count: count ? +count : undefined,
+      isPublic: isPublic ? JSON.parse(isPublic) : undefined,
     })
     return rep.status(200).send(list)
   } catch (e) {
