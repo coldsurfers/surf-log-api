@@ -38,3 +38,34 @@ export const blogArticleListRouteHandler: RouteHandler<{
     return rep.status(500).send()
   }
 }
+
+export const saveBlogArticleHandler: RouteHandler<{
+  Body: {
+    title: string
+    excerpt: string
+    thumbnail: string
+    category: string
+    editorText: string
+    tags: string[]
+  }
+}> = async (req, rep) => {
+  const { title, excerpt, thumbnail, category, editorText, tags } = req.body
+  try {
+    const blogArticle = new BlogArticle({
+      title,
+      excerpt,
+      thumbnail,
+      blogArticleCategory: {
+        name: category,
+      },
+      blogArticleTags: tags.map((tagname) => ({
+        name: tagname,
+      })),
+      content: editorText,
+    })
+    return await blogArticle.create()
+  } catch (e) {
+    console.error(e)
+    return rep.status(500).send()
+  }
+}
