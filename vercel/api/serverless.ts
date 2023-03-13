@@ -4,9 +4,21 @@ import { articleRouter } from '../../src/routes/article'
 import { categoryRouter } from '../../src/routes/category'
 import { fileRouter } from '../../src/routes/file'
 
+const { ALLOWED_ADMIN_IP } = process.env
+
 const fastify = Fastify({
   logger: process.env.NODE_ENV === 'development',
   trustProxy: true,
+})
+
+fastify.addHook('onRequest', (req, res, done) => {
+  if (req.routerPath.startsWith('/file')) {
+    if (ALLOWED_ADMIN_IP !== req.ip) {
+      res.status(404).send()
+    }
+    done()
+  }
+  done()
 })
 
 fastify.register(articleRouter, { prefix: '/article' })
