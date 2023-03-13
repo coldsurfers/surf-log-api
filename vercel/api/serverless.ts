@@ -12,7 +12,10 @@ const fastify = Fastify({
 })
 
 fastify.addHook('onRequest', (req, res, done) => {
-  if (req.routerPath.startsWith('/file')) {
+  if (
+    req.routerPath.startsWith('/file') ||
+    req.routerPath.startsWith('/article/save')
+  ) {
     if (ALLOWED_ADMIN_IP !== req.ip) {
       res.status(404).send()
     }
