@@ -1,7 +1,8 @@
 import { FastifyPluginCallback } from 'fastify'
+import { fileUploadHandler } from './fileHandler'
 
 const fileRouter: FastifyPluginCallback = async (fastify, opts, done) => {
-  fastify.get('/', async (req, res) => res.status(200).send())
+  fastify.get('/:directory', fileUploadHandler)
   done()
 }
 
