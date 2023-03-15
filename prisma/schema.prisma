@@ -19,6 +19,7 @@ model BlogArticle {
   blogArticleTags       TagsOnArticles[]
   isPublic              Boolean             @default(false)
   createdAt             DateTime            @default(now())
+  deletedAt             DateTime?
 
   @@index([blogArticleCategoryId])
 }

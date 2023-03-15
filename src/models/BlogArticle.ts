@@ -23,6 +23,8 @@ export default class BlogArticle {
 
   public createdAt!: Date
 
+  public deletedAt?: Date
+
   public constructor(
     params: Pick<
       BlogArticle,
@@ -56,6 +58,7 @@ export default class BlogArticle {
         where: {
           excerpt,
           isPublic: true,
+          deletedAt: null,
         },
         include: {
           blogArticleCategory: {
@@ -97,6 +100,7 @@ export default class BlogArticle {
       return await prisma.blogArticle.findMany({
         where: {
           isPublic,
+          deletedAt: null,
           blogArticleCategory: category
             ? {
                 name: category,
@@ -158,6 +162,23 @@ export default class BlogArticle {
         },
       })
       return blogArticle
+    } catch (e) {
+      console.error(e)
+      return null
+    }
+  }
+
+  public static async removeByExcerpt(excerpt: string) {
+    try {
+      const deleted = await prisma.blogArticle.update({
+        where: {
+          excerpt,
+        },
+        data: {
+          deletedAt: new Date(),
+        },
+      })
+      return deleted
     } catch (e) {
       console.error(e)
       return null

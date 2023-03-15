@@ -76,7 +76,23 @@ export const saveBlogArticleHandler: RouteHandler<{
       })),
       content: editorText,
     })
-    return await blogArticle.create()
+    const created = await blogArticle.create()
+    return rep.status(200).send(created)
+  } catch (e) {
+    console.error(e)
+    return rep.status(500).send()
+  }
+}
+
+export const deleteArticleByExcerptHandler: RouteHandler<{
+  Params: {
+    excerpt: string
+  }
+}> = async (req, rep) => {
+  const { excerpt } = req.params
+  try {
+    await BlogArticle.removeByExcerpt(excerpt)
+    return rep.status(204).send()
   } catch (e) {
     console.error(e)
     return rep.status(500).send()
