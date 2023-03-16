@@ -1,15 +1,14 @@
 import { FastifyPluginCallback } from 'fastify'
+import hasAdminPermission from '../../lib/hasAdminPermission'
 import { fileUploadHandler } from './fileHandler'
-
-const { ALLOWED_ADMIN_IP } = process.env
 
 const fileRouter: FastifyPluginCallback = async (fastify, opts, done) => {
   fastify.get('/:directory', {
     onRequest: async (req, rep, next) => {
-      if (req.ip !== ALLOWED_ADMIN_IP) {
-        return rep.status(404).send()
+      if (hasAdminPermission(req.ip)) {
+        return next()
       }
-      return next()
+      return rep.status(404).send()
     },
     handler: fileUploadHandler,
   })

@@ -60,7 +60,6 @@ export default class BlogArticle {
       return await prisma.blogArticle.findFirst({
         where: {
           excerpt,
-          isPublic: true,
           deletedAt: null,
         },
         include: {

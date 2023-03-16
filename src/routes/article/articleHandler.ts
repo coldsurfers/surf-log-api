@@ -1,7 +1,6 @@
 import { RouteHandler } from 'fastify'
+import hasAdminPermission from '../../lib/hasAdminPermission'
 import BlogArticle from '../../models/BlogArticle'
-
-const { ALLOWED_ADMIN_IP } = process.env
 
 export const blogArticleByExcerptHandler: RouteHandler<{
   Params: {
@@ -11,6 +10,12 @@ export const blogArticleByExcerptHandler: RouteHandler<{
   const { excerpt } = req.params
   try {
     const blogArticle = await BlogArticle.findByExcerpt(excerpt)
+    if (blogArticle && !blogArticle.isPublic) {
+      if (hasAdminPermission(req.ip)) {
+        return rep.status(200).send(blogArticle)
+      }
+      return rep.status(404).send()
+    }
     return rep.status(200).send(blogArticle)
   } catch (e) {
     console.error(e)
@@ -30,7 +35,7 @@ export const blogArticleListRouteHandler: RouteHandler<{
   const { ip } = req
   const { page, category, tag, count, isPublic } = req.query
   if (typeof isPublic === 'string') {
-    if (ALLOWED_ADMIN_IP !== ip) {
+    if (!hasAdminPermission(ip)) {
       return rep.status(404).send()
     }
     if (isPublic !== 'true' && isPublic !== 'false') {
