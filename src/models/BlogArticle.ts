@@ -34,6 +34,7 @@ export default class BlogArticle {
       | 'excerpt'
       | 'blogArticleCategory'
       | 'blogArticleTags'
+      | 'isPublic'
     >
   ) {
     const {
@@ -43,6 +44,7 @@ export default class BlogArticle {
       excerpt,
       blogArticleCategory,
       blogArticleTags,
+      isPublic,
     } = params
     this.title = title
     this.content = content
@@ -50,6 +52,7 @@ export default class BlogArticle {
     this.excerpt = excerpt
     this.blogArticleCategory = blogArticleCategory
     this.blogArticleTags = blogArticleTags
+    this.isPublic = isPublic
   }
 
   public static async findByExcerpt(excerpt: string) {
@@ -137,6 +140,7 @@ export default class BlogArticle {
         content,
         blogArticleTags,
         blogArticleCategory,
+        isPublic,
       } = this
       const blogArticle = await prisma.blogArticle.create({
         data: {
@@ -144,7 +148,7 @@ export default class BlogArticle {
           excerpt,
           thumbnail,
           content,
-          isPublic: true,
+          isPublic,
           blogArticleCategory: {
             connect: {
               name: blogArticleCategory.name,

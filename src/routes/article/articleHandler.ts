@@ -60,9 +60,11 @@ export const saveBlogArticleHandler: RouteHandler<{
     category: string
     editorText: string
     tags: string[]
+    isPublic: boolean
   }
 }> = async (req, rep) => {
-  const { title, excerpt, thumbnail, category, editorText, tags } = req.body
+  const { title, excerpt, thumbnail, category, editorText, tags, isPublic } =
+    req.body
   try {
     const blogArticle = new BlogArticle({
       title,
@@ -75,6 +77,7 @@ export const saveBlogArticleHandler: RouteHandler<{
         name: tagname,
       })),
       content: editorText,
+      isPublic,
     })
     const created = await blogArticle.create()
     return rep.status(200).send(created)
