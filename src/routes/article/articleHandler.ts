@@ -32,16 +32,8 @@ export const blogArticleListRouteHandler: RouteHandler<{
     isPublic?: string
   }
 }> = async (req, rep) => {
-  const { ip } = req
   const { page, category, tag, count, isPublic } = req.query
-  if (typeof isPublic === 'string') {
-    if (!hasAdminPermission(ip)) {
-      return rep.status(404).send()
-    }
-    if (isPublic !== 'true' && isPublic !== 'false') {
-      return rep.status(400).send()
-    }
-  }
+
   try {
     const list = await BlogArticle.list({
       page: page ? +page : 1,
