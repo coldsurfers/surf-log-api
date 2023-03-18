@@ -187,4 +187,45 @@ export default class BlogArticle {
       return null
     }
   }
+
+  public static async getAll({
+    isPublic = true,
+    isDeleted = false,
+  }: {
+    isPublic?: boolean
+    isDeleted?: boolean
+  }) {
+    try {
+      const allBlogArticles = await prisma.blogArticle.findMany({
+        where: {
+          isPublic,
+          deletedAt: isDeleted
+            ? {
+                not: null,
+              }
+            : null,
+        },
+        include: {
+          blogArticleCategory: {
+            select: {
+              name: true,
+            },
+          },
+          blogArticleTags: {
+            select: {
+              blogArticleTag: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      return allBlogArticles
+    } catch (e) {
+      console.error(e)
+      return []
+    }
+  }
 }

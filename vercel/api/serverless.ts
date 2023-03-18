@@ -2,6 +2,7 @@ import { VercelApiHandler, VercelRequest, VercelResponse } from '@vercel/node'
 import Fastify from 'fastify'
 import { articleRouter } from '../../src/routes/article'
 import { categoryRouter } from '../../src/routes/category'
+import { ciRouter } from '../../src/routes/ci'
 import { fileRouter } from '../../src/routes/file'
 
 const fastify = Fastify({
@@ -12,6 +13,7 @@ const fastify = Fastify({
 fastify.register(articleRouter, { prefix: '/article' })
 fastify.register(categoryRouter, { prefix: '/category' })
 fastify.register(fileRouter, { prefix: '/file' })
+fastify.register(ciRouter, { prefix: '/ci' })
 
 const handler: VercelApiHandler = async (
   req: VercelRequest,
